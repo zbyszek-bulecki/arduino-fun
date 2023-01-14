@@ -1,6 +1,7 @@
 #include <Stepper.h>
+#include <string.h>
 
-#define STEP_NUMBER 18
+#define STEP_NUMBER 120
 const int RIGHT_BUTTON_PIN = 7;
 const int LEFT_BUTTON_PIN = 6;
 const int RESET_BUTTON_PIN = 5;
@@ -13,10 +14,10 @@ int RightButtonCurrentState;
 int LeftButtonCurrentState;
 int ResetButtonCurrentState;
 
-int stepperSpeed = 120;
+int stepperSpeed = 60;
 int stepsPerRevolutionRight = 240;
 int stepsPerRevolutionLeft = -240;
-int motorPosition = 0;
+int motorPosition;
 
 void setup() {
   Serial.begin(115200);
@@ -33,22 +34,22 @@ void loop() {
   if (RightButtonLastState == LOW && RightButtonCurrentState == HIGH) {
     Serial.println("Let's roll RIGHT!");
     stepper_main.step(stepsPerRevolutionRight);
-    motorPosition = motorPosition + stepsPerRevolutionRight;
-    Serial.println(motorPosition, "This is the motor position: %s");
+    motorPosition = +stepsPerRevolutionRight;
+    Serial.println(motorPosition);
   }
   LeftButtonCurrentState = digitalRead(LEFT_BUTTON_PIN);
   if (LeftButtonLastState == LOW && LeftButtonCurrentState == HIGH) {
     Serial.println("Let's roll LEFT!");
     stepper_main.step(stepsPerRevolutionLeft);
-    motorPosition = motorPosition + stepsPerRevolutionLeft;
-    Serial.println(motorPosition, "This is the motor position: %s");
+    motorPosition = +stepsPerRevolutionLeft;
+    Serial.println(motorPosition);
   }
-  ResetButtonCurrentState = digitalRead(RESET_BUTTON_PIN);
-  if (ResetButtonLastState == LOW && ResetButtonCurrentState == HIGH) {
+  if (motorPosition != 0) {
     Serial.println("It's RESET time!");
-    stepper_main.step(motorPosition);
+    stepper_main.step(-motorPosition);
   }
+  motorPosition = 0;
   LeftButtonLastState = LeftButtonCurrentState;
   RightButtonLastState = RightButtonCurrentState;
-  ResetButtonCurrentState = ResetButtonLastState;
+  ResetButtonLastState = ResetButtonCurrentState;
 }
