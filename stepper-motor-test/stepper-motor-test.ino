@@ -44,11 +44,20 @@ void loop() {
     motorPosition = +stepsPerRevolutionLeft;
     Serial.println(motorPosition);
   }
-  if (motorPosition != 0) {
+  ResetButtonCurrentState = digitalRead(RESET_BUTTON_PIN);
+  if (ResetButtonLastState == LOW && ResetButtonCurrentState == HIGH) {
+    Serial.println(motorPosition);
     Serial.println("It's RESET time!");
     stepper_main.step(-motorPosition);
+    Serial.println(motorPosition);
   }
-  motorPosition = 0;
+
+  // if (motorPosition != 0) {
+  //   Serial.println("It's RESET time!");
+  //   stepper_main.step(-motorPosition);
+  // }
+  // motorPosition = 0;
+
   LeftButtonLastState = LeftButtonCurrentState;
   RightButtonLastState = RightButtonCurrentState;
   ResetButtonLastState = ResetButtonCurrentState;
