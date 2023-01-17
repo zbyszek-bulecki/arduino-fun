@@ -34,19 +34,15 @@ void loop() {
 
   RightButtonCurrentState = digitalRead(RIGHT_BUTTON_PIN);
   if (RightButtonLastState == LOW && RightButtonCurrentState == HIGH) {
-    Serial.println("Let's roll RIGHT!");
     stepper_main.step(stepsPerRevolutionRight);
     motorPosition = +stepsPerRevolutionRight;
-    Serial.println(motorPosition);
     counter++;
     lastUsed[0] = 'r';
   }
   LeftButtonCurrentState = digitalRead(LEFT_BUTTON_PIN);
   if (LeftButtonLastState == LOW && LeftButtonCurrentState == HIGH) {
-    Serial.println("Let's roll LEFT!");
     stepper_main.step(stepsPerRevolutionLeft);
     motorPosition = +stepsPerRevolutionLeft;
-    Serial.println(motorPosition);
     counter++;
     lastUsed[1] = 'l';
   }
@@ -54,12 +50,11 @@ void loop() {
   if (ResetButtonLastState == LOW && ResetButtonCurrentState == HIGH) {
     if(lastUsed[0] == 'r' && lastUsed[1] == 'l')
     motorPosition = 0;
-    Serial.println(motorPosition * counter);
-    Serial.println("It's RESET time!");
     stepper_main.step(-motorPosition * counter);
     counter = 0;
     motorPosition = 0;
-    Serial.println(motorPosition);
+    lastUsed[0] = NULL;
+    lastUsed[1] = NULL;
   }
 
   // if (motorPosition != 0) {
