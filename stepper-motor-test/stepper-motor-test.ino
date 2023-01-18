@@ -26,6 +26,9 @@ void setup() {
   pinMode(RIGHT_BUTTON_PIN, INPUT_PULLUP);
   pinMode(LEFT_BUTTON_PIN, INPUT_PULLUP);
   pinMode(RESET_BUTTON_PIN, INPUT_PULLUP);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
 }
 
 void loop() {
@@ -34,14 +37,18 @@ void loop() {
 
   RightButtonCurrentState = digitalRead(RIGHT_BUTTON_PIN);
   if (RightButtonLastState == LOW && RightButtonCurrentState == HIGH) {
+    digitalWrite(2, HIGH);
     stepper_main.step(stepsPerRevolutionRight);
+    digitalWrite(2, LOW);
     motorPosition = +stepsPerRevolutionRight;
     counter++;
     lastUsed[0] = 'r';
   }
   LeftButtonCurrentState = digitalRead(LEFT_BUTTON_PIN);
   if (LeftButtonLastState == LOW && LeftButtonCurrentState == HIGH) {
+    digitalWrite(3, HIGH);
     stepper_main.step(stepsPerRevolutionLeft);
+    digitalWrite(3, LOW);
     motorPosition = +stepsPerRevolutionLeft;
     counter++;
     lastUsed[1] = 'l';
@@ -50,18 +57,14 @@ void loop() {
   if (ResetButtonLastState == LOW && ResetButtonCurrentState == HIGH) {
     if(lastUsed[0] == 'r' && lastUsed[1] == 'l')
     motorPosition = 0;
+    digitalWrite(4, HIGH);
     stepper_main.step(-motorPosition * counter);
+    digitalWrite(4, LOW);
     counter = 0;
     motorPosition = 0;
     lastUsed[0] = NULL;
     lastUsed[1] = NULL;
   }
-
-  // if (motorPosition != 0) {
-  //   Serial.println("It's RESET time!");
-  //   stepper_main.step(-motorPosition);
-  // }
-  // motorPosition = 0;
 
   LeftButtonLastState = LeftButtonCurrentState;
   RightButtonLastState = RightButtonCurrentState;
