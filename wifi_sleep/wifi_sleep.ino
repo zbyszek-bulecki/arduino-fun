@@ -2,11 +2,14 @@
 #include <WiFiMulti.h>
 
 #define uS_TO_S_FACTOR 1000000
-#define TIME_TO_SLEEP 60
+#define TIME_TO_SLEEP 5
+
+WiFiMulti WiFiMulti;
 
 void setup() {
   Serial.begin(115200);
-  delay(10);
+
+    delay(10);
 
   // We start by connecting to a WiFi network
   WiFiMulti.addAP("Pancernik", "KawkaKawusia@2k21");
@@ -56,7 +59,9 @@ void setup() {
   Serial.println("Waiting 5 seconds before restarting...");
   delay(5000);
 
+
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+  Serial.println("ESP32 is going to sleep now ;-)");
   Serial.flush();
   esp_deep_sleep_start();
 }
