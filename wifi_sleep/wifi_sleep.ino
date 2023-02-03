@@ -43,13 +43,13 @@ void setup() {
     return;
   }
 
-  client.print("nya");
 
   int maxloops = 0;
 
   if (client.available() > 0) {
-    String line = client.readStringUntil('\r');
-    Serial.println(line);
+      client.print("nya");
+  String line = client.readStringUntil('\n');
+  Serial.println(line);
   } else {
     Serial.println("client.available() timed out ");
   }
