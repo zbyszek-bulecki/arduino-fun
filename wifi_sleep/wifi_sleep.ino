@@ -9,9 +9,8 @@ WiFiMulti WiFiMulti;
 void setup() {
   Serial.begin(115200);
 
-    delay(10);
+  delay(10);
 
-  // We start by connecting to a WiFi network
   WiFiMulti.addAP("Pancernik", "KawkaKawusia@2k21");
 
   Serial.println();
@@ -29,7 +28,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   const uint16_t port = 3000;
-  const char* host = "192.168.1.17";  // ip or dns
+  const char* host = "192.168.1.17";
 
   Serial.print("Connecting to ");
   Serial.println(host);
@@ -43,16 +42,26 @@ void setup() {
     return;
   }
 
+  Serial.println("Server connected, sending message.");
+  client.print("nya");
+  Serial.println("Message sent.");
 
-  int maxloops = 0;
+  // int maxloops = 0;
 
-  if (client.available() > 0) {
-      client.print("nya");
-  String line = client.readStringUntil('\n');
-  Serial.println(line);
-  } else {
-    Serial.println("client.available() timed out ");
-  }
+  // while (!client.available() && maxloops < 1000) {
+  //   maxloops++;
+  //   delay(1);  //delay 1 msec
+  // }
+
+  // if (client.available() > 0) {
+
+    Serial.println("Reading response from server.");
+    String line = client.readStringUntil('\n');
+    Serial.print("The message reads: ");
+    Serial.println(line);
+  // } else {
+  //   Serial.println("client.available() timed out ");
+  // }
 
   Serial.println("Closing connection.");
   client.stop();
