@@ -41,27 +41,25 @@ void setup() {
     delay(5000);
     return;
   }
+      client.print("nya");
+      client.available()
+    
 
-  Serial.println("Server connected, sending message.");
-  client.print("nya");
-  Serial.println("Message sent.");
+      Serial.println(client.available());
 
-  // int maxloops = 0;
+  if (client.available() > 0) {
 
-  // while (!client.available() && maxloops < 1000) {
-  //   maxloops++;
-  //   delay(1);  //delay 1 msec
-  // }
+    // Serial.println("Server connected, sending message.");
 
-  // if (client.available() > 0) {
+    // Serial.println("Message sent.");
 
-    Serial.println("Reading response from server.");
+    // Serial.println("Reading response from server.");
     String line = client.readStringUntil('\n');
     Serial.print("The message reads: ");
     Serial.println(line);
-  // } else {
-  //   Serial.println("client.available() timed out ");
-  // }
+  } else {
+    Serial.println("client.available() timed out ");
+  }
 
   Serial.println("Closing connection.");
   client.stop();
