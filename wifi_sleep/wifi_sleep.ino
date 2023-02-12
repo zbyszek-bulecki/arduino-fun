@@ -44,7 +44,6 @@ void setup() {
 
   Serial.println("Server connected, sending message.");
   client.flush();
-  client.
   client.println("nya");
   Serial.println("Message sent.");
   Serial.println(client.available());
